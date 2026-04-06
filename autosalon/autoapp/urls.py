@@ -1,0 +1,8 @@
+from django.urls import path
+from .views import home, one_car, car_by_brand
+
+urlpatterns = [
+    path('', home, name='home'),
+    path('brand/<int:brand_id>/', car_by_brand, name='car_by_brand'),
+    path('car/<int:car_id>/', one_car, name='one_car')
+]
