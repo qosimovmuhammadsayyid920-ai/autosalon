@@ -1,85 +1,62 @@
-<!DOCTYPE html>
-<html lang="uz">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>{{ brand.name }} — AutoSalon</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="{% url 'home' %}">AutoSalon</a>
-        </div>
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Bosh sahifa</a></li>
+            <li class="breadcrumb-item active">{{ brands.name }}</li>
+        </ol>
     </nav>
 
-    <div class="container mt-4">
-
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'home' %}">Bosh sahifa</a></li>
-                <li class="breadcrumb-item active">{{ brand.name }}</li>
-            </ol>
-        </nav>
-
-        <div class="d-flex align-items-center gap-3 mb-3">
-            {% if brand.logo %}
-            <img src="{{ brand.logo.url }}" style="width:60px; height:60px; object-fit:contain;">
-            {% endif %}
-            <div>
-                <h4 class="mb-0">{{ brand.name }}</h4>
-                <small class="text-muted">{{ brand.country }} &bull; {{ brand.founded_year }} yil</small>
-            </div>
-        </div>
-
-        {% if brand.description %}
-        <p class="text-muted mb-4">{{ brand.description }}</p>
+    <div class="d-flex align-items-center gap-3 mb-3">
+        {% if brands.logo %}
+        <img src="{{ brand.logo.url }}" style="width:60px; height:60px; object-fit:contain;">
         {% endif %}
-
-        <h5>Avtomobillar ({{ cars|length }} ta)</h5>
-        <div class="row">
-            {% for c in cars %}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    {% if c.image %}
-                    <img src="{{ c.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
-                    {% else %}
-                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
-                        style="height:200px;">
-                        Rasm yo'q
-                    </div>
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ c.name }}</h5>
-                        <p class="card-text text-muted">{{ c.color }} &bull; {{ c.year }} yil</p>
-                        <p class="card-text"><strong>${{ c.price }}</strong></p>
-                        <p class="card-text">
-                            <small class="text-muted">{{ c.probeg }} km &bull; {{ c.dvigitel }}</small>
-                        </p>
-                        {% if c.is_avaible %}
-                        <span class="badge bg-success">Mavjud</span>
-                        {% else %}
-                        <span class="badge bg-danger">Sotilgan</span>
-                        {% endif %}
-                    </div>
-                    <div class="card-footer">
-                        <a href="{% url 'one_car' c.id %}" class="btn btn-primary w-100">Batafsil</a>
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col-12">
-                <p class="text-muted">Bu brendda hozircha avtomobil yo'q.</p>
-            </div>
-            {% endfor %}
+        <div>
+            <h4 class="mb-0">{{ brands.name }}</h4>
+            <small class="text-muted">{{ brands.country }} &bull; {{ brands.founded_year }} yil</small>
         </div>
-
-        <a href="{% url 'home' %}" class="btn btn-outline-secondary mt-2">Orqaga</a>
-
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    {% if brands.description %}
+    <p class="text-muted mb-4">{{ brands.description }}</p>
+    {% endif %}
 
-</html>
+    <h5>Avtomobillar ({{ cars|length }} ta)</h5>
+    <div class="row">
+        {% for c in cars %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if c.image %}
+                <img src="{{ c.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+                {% else %}
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height:200px;">
+                    Rasm yo'q</div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ c.name }}</h5>
+                    <p class="card-text text-muted">{{ c.color }} &bull; {{ c.year }} yil</p>
+                    <p class="card-text"><strong>${{ c.price }}</strong></p>
+                    <p class="card-text">
+                        <small class="text-muted">{{ c.probeg }} km &bull; {{ c.dvigitel }}</small>
+                    </p>
+                    {% if c.is_avaible %}
+                    <span class="badge bg-success">Mavjud</span>
+                    {% else %}
+                    <span class="badge bg-danger">Sotilgan</span>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'one_car' c.id %}" class="btn btn-primary w-100">Batafsil</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-muted">Bu brendda hozircha avtomobil yo'q.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'home' %}" class="btn btn-outline-secondary mt-2">Orqaga</a>
+{% endblock %}

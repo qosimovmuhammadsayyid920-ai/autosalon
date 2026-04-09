@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    {% include 'components/_style.html'%}
+
+    <title>{{ title }}</title>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'home' %}">AutoSalon</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    {% include 'components/_scripts.html' %}
+</body>
+
+</html>
