@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Brand, Car
 from django.http import HttpRequest
+from .forms import BrandForm, CarForm
 
 
 def home(request: HttpRequest):
@@ -37,6 +38,29 @@ def one_car(request: HttpRequest, car_id: int):
     return render(request, 'autoapp/one_car.html', context)
 
 
+def add_brand(request: HttpRequest):
+    if request.method == 'POST':
+        form = BrandForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            brand = form.save()
+            return redirect('car_by_brand', brand_id=brand.id)
+    else:
+        form = BrandForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'autoapp/add_brand.html', context)
+
 def add_car(request: HttpRequest):
-    print(request.POST)
-    return render(request, 'autoapp/add_car.html')
+    if request.method == 'POST':
+        form = CarForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            car = form.save()
+            return redirect('one_car', car_id=car.id)
+    else:
+        form = CarForm()
+    context = {
+        'form': form
+    }
+
+    return render(request, 'autoapp/add_car.html', context)
