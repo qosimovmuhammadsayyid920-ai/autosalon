@@ -1,5 +1,6 @@
 from django import forms
 from .models import Car, Brand
+from django.core.validators import ValidationError
 
 class BrandForm(forms.ModelForm):
     class Meta: 
@@ -19,11 +20,24 @@ class BrandForm(forms.ModelForm):
             'logo': forms.FileInput(attrs={
                 'class': 'form-control'
             }),
-            'desctiption': forms.TextInput(attrs={
+            'description': forms.TextInput(attrs={
                 'class': 'form-control',
                 'rows': 5,
             })
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get('name')
+        if not name.isalpha():
+            raise ValidationError("Nomi faqat harflarda bolishi kerak!!!!")
+        
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if len(description) > 50:
+            raise ValidationError('Haqidagi malumot 50 ta harfadan iborat bolsin!!!')
+        return description
+            
 
 class CarForm(forms.ModelForm):
     class Meta:
@@ -56,3 +70,19 @@ class CarForm(forms.ModelForm):
                 'class': 'form-checkbox'
             })
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        year = cleaned_data.get('year')
+        if len(str(year)) != 4:
+            raise ValidationError('Yili 4 ta sondan iborat bolishi kerak!!!')
+        
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
+        if len(str(price)) >= 10:
+            raise ValidationError('Narxi 10 ta sonlardan iborat bolishi kerak!!!')
+        return price
+    
+class CommentForm(forms.Form):
+    text = forms.CharField(max_length=100)
+    

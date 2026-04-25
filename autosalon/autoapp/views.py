@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Brand, Car
 from django.http import HttpRequest
-from .forms import BrandForm, CarForm
+from .forms import BrandForm, CarForm, CommentForm
 
 
 def home(request: HttpRequest):
@@ -24,7 +24,8 @@ def car_by_brand(request: HttpRequest, brand_id: int):
     context = {
         'brands': brands,
         'cars': cars,
-        'title': brand.name
+        'title': brand.name,
+        'form': CommentForm()
     }
     return render(request, 'autoapp/car_by_brand.html', context)
 

@@ -46,7 +46,45 @@
 
         </div>
 
+        <hr>
+
+        {# Commentlar #}
+        <h5 class="fw-bold mt-3">Izohlar</h5>
+
+        {% if comments %}
+            {% for comment in comments %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <p class="mb-1">{{ comment.text }}</p>
+                    <small class="text-muted">{{ comment.student }} — {{ comment.created_at }}</small>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">Hali izoh yo'q.</p>
+        {% endif %}
+
+        <hr>
+
+        {# Comment forma #}
+        <h5 class="fw-bold">Izoh qoldiring</h5>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                    <div class="alert alert-danger mt-1">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Yuborish</button>
+        </form>
+
     </div>
 </div>
 
-{% endblock content %}
+{% endblock content %}  
